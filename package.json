@@ -1,0 +1,27 @@
+{
+  "name": "seoul-last-train",
+  "version": "1.0.0",
+  "description": "Seoul Last Train Atlas",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "data:osm": "node scripts/fetch-osm.mjs && node scripts/fetch-osm-stations.mjs && node scripts/build-network.mjs",
+    "data:mock": "node scripts/make-mock-timetable.mjs",
+    "data:timetable": "node scripts/fetch-timetable.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@deck.gl/core": "^9.4.2",
+    "@deck.gl/extensions": "^9.4.2",
+    "@deck.gl/layers": "^9.4.2",
+    "@deck.gl/mapbox": "^9.4.2",
+    "maplibre-gl": "^4.7.1"
+  },
+  "devDependencies": {
+    "vite": "^6.4.6"
+  }
+}

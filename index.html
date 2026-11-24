@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0d16" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>서울막차도 · Seoul Last Train Atlas</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+    <link rel="apple-touch-icon" href="./icon-192.png" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="map-labels"></div>
+
+    <!-- 헤더 -->
+    <header class="panel brand">
+      <div class="brand-mark">막</div>
+      <div class="brand-text">
+        <h1>서울막차도</h1>
+        <p>SEOUL LAST TRAIN ATLAS</p>
+      </div>
+      <div class="brand-stats">
+        <div><b id="stat-lines">9</b><span>노선</span></div>
+        <div><b id="stat-stations">0</b><span>역</span></div>
+      </div>
+    </header>
+
+    <!-- 검색 -->
+    <div class="panel search">
+      <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="search" type="text" placeholder="역명·노선명으로 찾기  Search station / line" autocomplete="off" />
+      <ul id="search-results" hidden></ul>
+    </div>
+
+    <!-- 우상단 컨트롤 -->
+    <div class="controls">
+      <div class="seg" id="seg-day">
+        <button data-v="weekday" class="on">평일</button>
+        <button data-v="holiday">주말·휴일</button>
+      </div>
+      <div class="seg" id="seg-height">
+        <button data-v="time" class="on">막차 시각 높이</button>
+        <button data-v="line">노선별</button>
+        <button data-v="flat">평면</button>
+      </div>
+      <button class="round" id="btn-info" title="정보">i</button>
+    </div>
+
+    <!-- 현재 위치(GPS) 버튼 -->
+    <button class="round gps-btn" id="btn-gps" title="내 위치 · 가장 가까운 역 찾기" aria-label="내 위치 찾기">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="3.5" />
+        <path d="M12 2v3.5M12 18.5V22M2 12h3.5M18.5 12H22" />
+      </svg>
+    </button>
+
+    <!-- 데이터 출처 배지 -->
+    <div id="data-badge" class="badge" hidden></div>
+
+    <!-- 토스트 알림 -->
+    <div id="toast" class="toast" hidden></div>
+
+    <!-- 역 정보 팝업 (모바일에서는 바텀시트) -->
+    <div id="popup" class="panel popup" hidden></div>
+
+    <!-- 정보 모달 -->
+    <div id="info" class="modal" hidden>
+      <div class="panel modal-body">
+        <button class="close" id="info-close">×</button>
+        <h2>서울막차도 · Seoul Last Train Atlas</h2>
+        <p>서울 지하철 1~9호선 역별·방향별 막차 시각을 시간에 따라 보여 주는 지도입니다. 막차가 떠난 역은 불이 꺼집니다.</p>
+        <ul>
+          <li>1호선: 의정부~인천, 구로~수원, 금천구청~광명 (서동탄 지선 제외)</li>
+          <li>2~9호선: 전 구간</li>
+        </ul>
+        <p class="muted" id="info-source"></p>
+        <p class="muted">노선·역 좌표 © OpenStreetMap contributors (ODbL) · 지도 © CARTO</p>
+      </div>
+    </div>
+
+    <!-- 하단 타임라인 -->
+    <footer class="panel timeline">
+      <div class="clock">
+        <span class="label">표시 중인 시각</span>
+        <span id="clock">23:30</span>
+        <span class="sub" id="clock-sub">막차 전 0역 · 종료 0역</span>
+      </div>
+      <div class="track-wrap">
+        <div class="ticks" id="ticks"></div>
+        <input type="range" id="slider" min="1290" max="1560" step="0.5" value="1410" />
+      </div>
+      <div class="timeline-actions">
+        <button class="round play" id="btn-play" title="재생">
+          <svg id="icon-play" viewBox="0 0 24 24" width="16" height="16"><path d="M7 5l12 7-12 7z" fill="currentColor"/></svg>
+          <svg id="icon-pause" viewBox="0 0 24 24" width="16" height="16" hidden><path d="M6 5h4v14H6zM14 5h4v14h-4z" fill="currentColor"/></svg>
+        </button>
+        <button class="pill" id="btn-now">지금 시각</button>
+      </div>
+    </footer>
+
+    <div id="hover-tip" class="tip" hidden></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
